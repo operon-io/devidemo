@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/apache/camel/main/dsl/camel-yaml-dsl/camel-yaml-dsl/src/generated/resources/schema/camelYamlDsl.json
+#
+# Probes:
+#
+- route:
+    id: readiness-probe.route
+    from:
+      uri: "direct:readiness-probe"
+      steps:
+        - setBody:
+            constant: "Ready"
+# -------------------------------------------------------
+- route:
+    id: liveness-probe.route
+    from:
+      uri: "direct:liveness-probe"
+      steps:
+        - setBody:
+            constant: "Alive"

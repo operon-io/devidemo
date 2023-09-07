@@ -1,0 +1,88 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/apache/camel/main/dsl/camel-yaml-dsl/camel-yaml-dsl/src/generated/resources/schema/camel-yaml-dsl.json
+
+#
+# Set auto-startup to true (from resources/application.yml) if you want to run this example
+#
+- route:
+    id: split-example.1.route
+    auto-startup: "{{example.eip.split.1.enabled}}"
+    from:
+        uri: "timer://split.1.example?repeatCount=1"
+        steps:
+        - log:
+            message: "Split-example"
+        
+        - set-body:
+            constant: "foo,bar,baz"
+
+        - split:
+            simple: ${body}
+            delimiter: ","
+            steps:
+              - to:
+                  uri: direct:split-example-handler
+
+- route:
+    id: split-example.2.route
+    auto-startup: "{{example.eip.split.2.enabled}}"
+    from:
+        uri: "timer://split.2.example?repeatCount=1"
+        steps:
+        - log:
+            message: "Split-example -- 2"
+        
+        - set-body:
+            groovy: |
+              List<String> list = new ArrayList<String>();
+              list.add("foo")
+              list.add("bar")
+              list.add("baz")
+              list
+
+        - split:
+            simple: ${body}
+            steps:
+              - to:
+                  uri: direct:split-example-handler
+
+- route:
+    id: split-example.3.route
+    auto-startup: "{{example.eip.split.3.enabled}}"
+    from:
+        uri: "timer://split.3.example?repeatCount=1"
+        steps:
+        - log:
+            message: "Split-example -- 3"
+        
+        - set-body:
+            constant: "[\"foo\", \"bar\", \"baz\"]"
+
+        # 
+        # This header is required so Operon will return java.util.ArrayList,
+        # which is iterable by Split-pattern. Without this Operon would return
+        # JSON serialized as String, which Split cannot iterate.
+        #
+        - set-header:
+            name: outputMimeType
+            constant: application/java
+        
+        - log:
+            message: "Headers :: ${headers}"
+
+        - split:
+            language:
+              language: operon
+              expression: |
+                Select: $
+            steps:
+              - to:
+                  uri: direct:split-example-handler
+
+- route:
+    id: split-example-handler.route
+    auto-startup: "{{example.eip.split.handler-enabled}}"
+    from:
+        uri: "direct:split-example-handler"
+        steps:
+        - log:
+            message: "Splitted part :: ${body}"

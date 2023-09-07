@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/apache/camel/main/dsl/camel-yaml-dsl/camel-yaml-dsl/src/generated/resources/schema/camelYamlDsl.json
+
+#
+# Read from SFTP and send to Process-module
+# 
+- from:
+    id: in.route
+    uri: sftp:{{SFTP_HOST}}:{{SFTP_PORT}}/csv?username={{SFTP_USERNAME}}&password={{SFTP_PASSWORD}}&readLock=changed&useUserKnownHostsFile=false&includeExt=csv&move=.done
+    steps:
+      - log: "IN :: SFTP found file: ${header.CamelFileName}, payload=${body}"
+      - to: direct:controller

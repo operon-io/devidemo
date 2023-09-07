@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/apache/camel/main/dsl/camel-yaml-dsl/camel-yaml-dsl/src/generated/resources/schema/camel-yaml-dsl.json
+- rest:
+    description: Readiness Probe for kubernetes to poll when the app is ready to serve requests.
+    path: "/api"
+    post:
+      - path: "/process"
+        id: "post.process"
+        to:
+            uri: "direct:process.controller"
+    get:
+      - path: "/ready"
+        id: "get.readiness-probe"
+        to:
+          uri: "direct:readiness-probe"
+
+      - path: "/alive"
+        id: "get.liveness-probe"
+        to:
+          uri: "direct:liveness-probe"

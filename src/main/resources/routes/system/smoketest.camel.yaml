@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/apache/camel/main/dsl/camel-yaml-dsl/camel-yaml-dsl/src/generated/resources/schema/camelYamlDsl.json
+
+#
+# This route serves as a simple smoke-test.
+#
+- route:
+    id: smoketest.route
+    autoStartup: true
+    from:
+      uri: "timer://smoketest.route?repeatCount=1"
+      steps:
+        - log:
+            message: "Smoketest OK"

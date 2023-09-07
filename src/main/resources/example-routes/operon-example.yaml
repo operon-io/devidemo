@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/apache/camel/main/dsl/camel-yaml-dsl/camel-yaml-dsl/src/generated/resources/schema/camel-yaml-dsl.json
+
+- route:
+    id: operon-example-1.route
+    auto-startup: "{{example.operon.1.enabled}}"
+    from:
+      uri: "timer://operon-example-1?repeatCount=1"
+      steps:
+        - set-body:
+            constant: |
+              Select: "abc"
+        - to:
+            id: kutsu-1
+            uri: "operon://foo?outputResult=false"
+            description: Kutsuu operon-komponenttia
+        - log:
+            message: "Body now :: ${body}"
+
+- route:
+    id: operon-example-2.route
+    auto-startup: "{{example.operon.2.enabled}}"
+    from:
+      uri: "timer://operon-example-2?repeatCount=1"
+      steps:
+        - set-body:
+            language:
+              language: operon
+              expression: |
+                Select: "Hello from Operon!"
+
+- route:
+    id: operon-example-3.route
+    auto-startup: "{{example.operon.3.enabled}}"
+    from:
+      uri: "timer://operon-example-3?repeatCount=1"
+      steps:
+        - set-header:
+            name: initialValue
+            constant: "{foo: 1, bar: 2, baz: 3}"
+        - set-body:
+            language:
+              language: operon
+              expression: |
+                Select: $
+        - log:
+            message: "Body now :: ${body}"

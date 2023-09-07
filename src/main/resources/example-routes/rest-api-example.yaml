@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/apache/camel/main/dsl/camel-yaml-dsl/camel-yaml-dsl/src/generated/resources/schema/camel-yaml-dsl.json
+
+- rest:
+    description: example-api
+    path: "/api"
+    get:
+        - path: "/hello"
+          id: "hello.get"
+          to:
+            uri: "direct:example_api.respond.hello"
+        
+        - path: "/groovy-example"
+          id: "groovy.get"
+          to:
+            uri: "direct:example_api.respond.groovy"
+
+- route:
+    id: example_api.hello.route
+    from:
+      uri: "direct:example_api.respond.hello"
+      steps:
+        - set-body:
+            constant: "Hello!"
+
+- route:
+    id: example_api.groovy.route
+    description: example which shows how to use groovy-script from a file.
+    from:
+      uri: direct:example_api.respond.groovy
+      steps:
+        # This value is used by the script
+        - set-body:
+            constant: Hello!
+        - set-body:
+            groovy: "resource:classpath:example-scripts/example.groovy"

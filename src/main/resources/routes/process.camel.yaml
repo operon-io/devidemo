@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/apache/camel/main/dsl/camel-yaml-dsl/camel-yaml-dsl/src/generated/resources/schema/camelYamlDsl.json
+#
+# This route processes the file:
+#
+- route:
+    id: process.map.route
+    from:
+      uri: "direct:process.mapforce"
+      steps:
+        - log: MAP CSV
+        
+        - bean:
+            ref: "worktimeMapper"
+            method: "csv_to_json(*)"
+        
+        - convertBodyTo: java.lang.String
+        
+        - to: log:com.devikone.demo?level=INFO
+        
+        - to: mock:process.mapforce.result
+
+# -------------------------------------------------------
+
+#
+# This route processes the file with Operon:
+#
+- route:
+    id: process.map.operon.route
+    from:
+      uri: "direct:process.operon"
+      steps:
+        - log: MAP CSV With Operon
+        
+        - convertBodyTo: java.lang.String
+
+        - to: direct:csvToJson
+
+        - setHeader:
+            name: "initialValue"
+            simple: "${body}"
+
+        - setBody:
+            language:
+              language: operon
+              expression: |
+                Select: 
+                  Map {
+                    person_id: .id,
+                    date: .date,
+                    arrival_ts: .arrival,
+                    departure_ts: .departure,
+                    extra_info: .extra_info,
+                    code: When .id => number() >= 37:
+                            "Check!";
+                          Otherwise empty;
+                  };

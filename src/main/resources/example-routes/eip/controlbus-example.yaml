@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/apache/camel/main/dsl/camel-yaml-dsl/camel-yaml-dsl/src/generated/resources/schema/camel-yaml-dsl.json
+
+#
+# Set auto-startup to true (from resources/application.yml) if you want to run this example
+#
+- route:
+    id: controlbus.example.route
+    auto-startup: "{{example.eip.controlbus.enabled}}"
+    from:
+        uri: "timer://controlbus.example?repeatCount=100&period=1500"
+        steps:        
+        - log:
+            message: "This message should be shown only once."
+
+- route:
+    id: controlbus.example.hander.route
+    auto-startup: "{{example.eip.controlbus.enabled}}"
+    from:
+        uri: "timer://controlbus.handler.example?repeatCount=1&delay=2000"
+        steps:        
+        - log:
+            message: "Stopping now the route :: controlbus.example.route"
+        - to:
+            uri: "controlbus:route?routeId=controlbus.example.route&action=stop"

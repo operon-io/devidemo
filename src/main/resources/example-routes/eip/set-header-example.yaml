@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/apache/camel/main/dsl/camel-yaml-dsl/camel-yaml-dsl/src/generated/resources/schema/camel-yaml-dsl.json
+
+#
+# Set auto-startup to true (from resources/application.yml) if you want to run this example
+#
+- route:
+    id: set-header.example.route
+    auto-startup: "{{example.eip.set-header.enabled}}"
+    from:
+        uri: "timer://set-header.example?repeatCount=1"
+        steps:        
+        - set-header:
+            # This sets the header named "CamelHttpMethod",
+            # using the Exchange class' static field HTTP_METHOD
+            name: "Exchange.HTTP_METHOD"
+            constant: "POST"
+        - log:
+            #
+            # This returns the value (POST)
+            #
+            message: "Header :: ${header.CamelHttpMethod}"
+        - log:
+            #
+            # NOTE: this does NOT return the value!
+            #
+            message: "Header :: ${header.HTTP_METHOD}"
+        - log:
+            #
+            # Inspect what headers are set:
+            #
+            message: "Headers :: ${exchange.getIn().getHeaders()}"
+        #
+        # Copy the header to another header:
+        #
+        - set-header:
+            name: "myHttpMethod"
+            header: "Exchange.HTTP_METHOD"
+        - log:
+            #
+            # NOTE that accessing headers is case-insensitive
+            #
+            message: "Header :: ${header.myhttpmethod}"

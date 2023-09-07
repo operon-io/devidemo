@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/apache/camel/main/dsl/camel-yaml-dsl/camel-yaml-dsl/src/generated/resources/schema/camel-yaml-dsl.json
+#
+# This route is for local-testing:
+#
+- from:
+    id: in.test.route
+    uri: "file:inbox/csv?readLock=changed"
+    steps:
+      - log:
+          message: "IN FILE"
+      - to:
+          uri: "direct:process.controller"

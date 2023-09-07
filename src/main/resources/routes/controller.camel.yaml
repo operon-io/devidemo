@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/apache/camel/main/dsl/camel-yaml-dsl/camel-yaml-dsl/src/generated/resources/schema/camelYamlDsl.json
+
+#
+# This route orchestrates the csv-processing.
+# Assumed input is the csv-data in the ${body}
+#
+- route:
+    id: controller.route
+    from:
+      uri: direct:controller
+      steps:
+        - log: "PROCESS :: CSV :: ${body}"
+        - to: "{{app.controller.process.mapforce}}"
+        - to: "{{app.controller.out}}"
+        - to: "mock:controller.result"
+
+
+
+# -------------------------------------------------------
+
+#
+# This route is to demonstrate the usage of alternative controller
+#
+- route:
+    id: controller.operon.route
+    from:
+      uri: direct:controller.operon
+      steps:
+        - log: "PROCESS :: CSV :: ${body}"
+        - to: "{{app.controller.process.operon}}"
+        - to: "log:com.devikone.demo?level=INFO"
+        - to: "{{app.controller.out}}"
+        - to: "mock:controller.result"

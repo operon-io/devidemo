@@ -1,0 +1,9 @@
+Select: Map
+   {
+       person_id: .id,
+       date: .date,
+       arrival_ts: .arrival,
+       departure_ts: .departure,
+       extra_info: .extra_info,
+       code: When .id => number() >= 37: "DUMMY!"; Otherwise empty;
+    };

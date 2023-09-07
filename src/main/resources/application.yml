@@ -1,0 +1,152 @@
+#
+# This is used in local-development: mvn compile quarkus:dev
+#
+"%dev":
+    quarkus:
+        banner:
+            enabled: false
+        log:
+            file:
+                enable: true
+
+    camel:
+        context:
+            name: integration-template-quarkus
+        main:
+            #
+            # NOTE: after the comma "," there must not be any whitespaces.
+            #
+            routes-include-pattern: classpath:routes/*.yaml,classpath:routes/system/*.yaml,classpath:example-routes/*.yaml"
+    example:
+        eip:
+            choice:
+                enabled: false
+            split:
+                handler-enabled: true
+                "1":
+                  enabled: false
+                "2":
+                  enabled: false
+                "3":
+                  enabled: false
+            set-header:
+                enabled: false
+            controlbus:
+                enabled: false
+        groovy:
+            enabled: false
+        operon:
+            "1":
+                enabled: false
+            "2":
+                enabled: false
+            "3":
+                enabled: false
+        redis:
+            enabled: false
+    service:
+        ibgw:
+            enabled: false
+            rest:
+                enabled: false
+        csv:
+            enabled: true
+            rest:
+                enabled: false
+    #
+    # Place the application specific configurations here
+    # that are used during development.
+    #
+    app:
+        in:
+            trigger: "timer:acme?repeatCount=2&period=100"
+            enabled: true
+        controller:
+            process:
+                mapforce: "direct:process.mapforce"
+                operon: "direct:process.operon"
+            out: "direct:out.sftp"
+        redis:
+            prefix: "acme-app"
+
+#
+# This profile is activated during unit-tests.
+# Command: `mvn clean test`
+#
+"%test":
+    quarkus:
+        banner:
+            enabled: false
+        log:
+            file:
+                enable: true
+    #artemis:
+    #    url: amq.osoite
+
+    camel:
+        context:
+            name: integration-template-quarkus
+        main:
+            routes-include-pattern: classpath:routes/*.yaml,classpath:test-routes/*.yaml,classpath:routes/system/*.yaml
+
+    service:
+        ibgw:
+            enabled: false
+            rest:
+                enabled: false
+    #
+    # Place the application specific configurations here
+    # that are used during development.
+    #
+    app:
+        in:
+            trigger: "timer:acme?repeatCount=2&period=100"
+            enabled: true
+        controller:
+            process:
+                mapforce: "direct:process.mapforce"
+                operon: "direct:process.operon"
+            out: "direct:out.fake.sftp"
+        redis:
+            prefix: "acme-app"
+
+# For the 'kubernetes'-profile we give the routes from file-system,
+# which quarkus in hot-reload -mode cannot use.
+# The use of routes from file-system is for Devikone's Kubernetes
+# Deployment-files, which may contain extra-routes from Config-files.
+"%kubernetes":
+    quarkus:
+        banner:
+            enabled: false
+        log:
+            file:
+                enable: true
+    artemis:
+        url: amq.osoite
+
+    camel:
+        context:
+            name: integration-template-quarkus
+        main:
+            routes-include-pattern: file:extra-routes/*.yaml,classpath:routes/*.yaml,classpath:routes/system/*.yaml
+    service:
+        ibgw:
+            enabled: false
+            rest:
+                enabled: false
+    #
+    # Place the application specific configurations here
+    # if they are not governed by "app.cm.yaml" from the
+    # Kubernetes -resources.
+    #
+    app:
+        in:
+            trigger: "timer:acme?repeatCount=2&period=100"
+            enabled: false
+        controller:
+            process:
+                mapforce: "direct:process.mapforce"
+                operon: "direct:process.operon"
+            out: "direct:out.sftp"
+        redis:
+            prefix: "acme-app"

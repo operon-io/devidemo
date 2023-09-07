@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/apache/camel/main/dsl/camel-yaml-dsl/camel-yaml-dsl/src/generated/resources/schema/camelYamlDsl.json
+
+- route:
+    id: all.combined.route
+    autoStartup: false
+    description: |
+      This route shows the full integration combined 
+      into one single route.
+    from:
+      uri: "sftp:{{SFTP_HOST}}:{{SFTP_PORT}}/csv?username={{SFTP_USERNAME}}&password={{SFTP_PASSWORD}}&readLock=changed&useUserKnownHostsFile=false&includeExt=csv&move=.done"
+      steps:
+        - log: "New message from SFTP"
+        
+        - convertBodyTo:
+            description: Ensure that the file is materialized into String
+            type: "java.lang.String"
+
+        - to:
+            description: Convert the CSV into JSON
+            uri: "direct:csvToJson"
+
+        - setHeader:
+            description: Initial value for Operon-query
+            name: "initialValue"
+            simple: "${body}"
+
+        - setBody:
+            language:
+              language: operon
+              expression: |
+                Select: 
+                  Map {
+                    person_id: .id,
+                    date: .date,
+                    arrival_ts: .arrival,
+                    departure_ts: .departure,
+                    extra_info: .extra_info,
+                    code: When .id => number() >= 37:
+                            "Check!";
+                          Otherwise empty;
+                  };
+
+        - setHeader:
+            description: Set the output-filename
+            name: "CamelFileName"
+            simple: "${file:onlyname.noext}.json"
+
+        - to:
+            description: Send the file to target system
+            uri: "sftp:{{SFTP_HOST}}:{{SFTP_PORT}}/json?username={{SFTP_USERNAME}}&password={{SFTP_PASSWORD}}&readLock=changed&useUserKnownHostsFile=false"

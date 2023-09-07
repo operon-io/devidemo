@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/apache/camel/main/dsl/camel-yaml-dsl/camel-yaml-dsl/src/generated/resources/schema/camelYamlDsl.json
+
+# -------------------------------------------------------
+
+#
+# This route sends the processed file outwards with SFTP:
+#
+- route:
+    id: out.sftp.route
+    from:
+      uri: direct:out.sftp
+      steps:
+        - log: OUT SFTP
+
+        - setHeader:
+            name: "CamelFileName"
+            simple: "${file:onlyname.noext}.json"
+
+        - to: sftp:{{SFTP_HOST}}:{{SFTP_PORT}}/json?username={{SFTP_USERNAME}}&password={{SFTP_PASSWORD}}&readLock=changed&useUserKnownHostsFile=false
+
+# -------------------------------------------------------
+
+#
+# This route sends the processed file outwards to local-fs:
+#
+- route:
+    id: out.fake.sftp.route
+    from:
+      uri: direct:out.fake.sftp
+      steps:
+        - log: OUT FAKE SFTP
+
+        - setHeader:
+            description: File name is set here manually
+            name: "CamelFileName"
+            simple: "test-output.json"
+
+        - to: file:outbox/json

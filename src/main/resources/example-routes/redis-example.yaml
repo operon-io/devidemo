@@ -1,0 +1,18 @@
+- route:
+    from:
+      uri: timer://redis-example?period=60000
+      steps:
+        - log:
+            message: Hello from redis-example!
+        - bean:
+            ref: redis
+            method: set("foo", "bar")
+        - log:
+            message: Set the Redis-key foo
+        - bean:
+            ref: redis
+            method: get("foo")
+        - log:
+            message: 'Value foo :: ${body}'
+    id: example.redis.route
+    autoStartup: '{{example.redis.enabled}}'

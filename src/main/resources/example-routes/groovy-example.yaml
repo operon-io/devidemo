@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/apache/camel/main/dsl/camel-yaml-dsl/camel-yaml-dsl/src/generated/resources/schema/camel-yaml-dsl.json
+
+#
+# To use Groovy, see attributes: https://access.redhat.com/documentation/en-us/red_hat_fuse/7.6/html/apache_camel_development_guide/groovy
+# 
+# Attribute	| Type	| Value
+# context | org.apache.camel.CamelContext | The Camel Context
+# exchange | org.apache.camel.Exchange | The current Exchange
+# request | org.apache.camel.Message | The IN message
+# response | org.apache.camel.Message | The OUT message
+# properties | org.apache.camel.builder.script.PropertiesFunction | Function with a resolve method to make it easier to use the properties component inside scripts.
+#
+- route:
+    id: groovy-example.route
+    auto-startup: "{{example.groovy.enabled}}"
+    from:
+      uri: "timer://groovy-example?period=60000"
+      steps:
+        - set-body:
+            constant: "100"
+        - set-body:
+            groovy: |
+              String body = request.body
+              int intValue = Integer.parseInt(body)
+              intValue += 1
+              return intValue
+        - log:
+            message: "Hello from timer groovy-example :: ${body}"

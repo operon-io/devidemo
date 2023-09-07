@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "person_id",
+      "date",
+      "arrival_ts",
+      "departure_ts",
+      "extra_info",
+      "code"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "person_id": {
+        "type": "string"
+      },
+      "date": {
+        "type": "string"
+      },
+      "arrival_ts": {
+        "type": "string"
+      },
+      "departure_ts": {
+        "type": "string"
+      },
+      "extra_info": {
+        "type": "string"
+      },
+      "code": {
+        "type": "string"
+      }
+    }
+  }
+}

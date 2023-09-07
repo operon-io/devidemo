@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Edited with Altova MapForce 2022r2 -->
+<mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="25">
+	<resources/>
+	<component name="defaultmap" uid="1" editable="1" blackbox="0">
+		<properties SelectedLanguage="java"/>
+		<structure>
+			<children>
+				<component name="worktimeJson" library="json" uid="3" kind="31">
+					<properties XSLTTargetEncoding="UTF-8" XSLTDefaultOutput="1"/>
+					<view ltx="853" lty="100" rbx="1062" rby="300"/>
+					<data>
+						<root scrollposition="1">
+							<header>
+								<namespaces>
+									<namespace/>
+									<namespace uid="http://www.altova.com/mapforce"/>
+								</namespaces>
+							</header>
+							<entry name="FileInstance" ns="1" expanded="1">
+								<entry name="document" ns="1" expanded="1" casttotargettypemode="cast-in-subtree">
+									<entry name="root" expanded="1">
+										<entry name="array" expanded="1">
+											<entry name="item" type="json-item" expanded="1">
+												<entry name="object" inpkey="13" expanded="1">
+													<entry name="person_id" type="json-property" expanded="1">
+														<entry name="string" inpkey="2"/>
+													</entry>
+													<entry name="date" type="json-property" expanded="1">
+														<entry name="string" inpkey="3"/>
+													</entry>
+													<entry name="arrival_ts" type="json-property" expanded="1">
+														<entry name="string" inpkey="4"/>
+													</entry>
+													<entry name="departure_ts" type="json-property" expanded="1">
+														<entry name="string" inpkey="5"/>
+													</entry>
+													<entry name="extra_info" type="json-property" expanded="1">
+														<entry name="string" inpkey="6"/>
+													</entry>
+													<entry name="code" type="json-property" expanded="1">
+														<entry name="string" inpkey="19"/>
+													</entry>
+												</entry>
+											</entry>
+										</entry>
+									</entry>
+								</entry>
+							</entry>
+						</root>
+						<json schema="worktimeJson.schema.json" inputinstance="worktimeJson.json" outputinstance="worktimeJson.json"/>
+					</data>
+				</component>
+				<component name="Työajanseuranta_CSV" library="text" uid="2" kind="16">
+					<properties/>
+					<view ltx="189" lty="94" rbx="333" rby="332"/>
+					<data>
+						<root scrollposition="1">
+							<header>
+								<namespaces>
+									<namespace/>
+									<namespace uid="http://www.altova.com/mapforce"/>
+								</namespaces>
+							</header>
+							<entry name="FileInstance" ns="1" expanded="1">
+								<entry name="document" ns="1" expanded="1">
+									<entry name="Rows" outkey="7" expanded="1">
+										<entry name="id" outkey="14"/>
+										<entry name="date" outkey="15"/>
+										<entry name="arrival" outkey="16"/>
+										<entry name="departure" outkey="17"/>
+										<entry name="extra_info" outkey="18"/>
+									</entry>
+								</entry>
+							</entry>
+						</root>
+						<text type="csv" encoding="1000" byteorder="1" byteordermark="0" inputinstance="example_csv.csv">
+							<settings separator=";" quote="&quot;" firstrownames="true" removeempty="true">
+								<names root="example_csv" block="Rows">
+									<field0 name="id" type="string"/>
+									<field1 name="date" type="string"/>
+									<field2 name="arrival" type="string"/>
+									<field3 name="departure" type="string"/>
+									<field4 name="extra_info" type="string"/>
+									<field5 name="firstname" type="string"/>
+									<field6 name="lastname" type="string"/>
+									<field7 name="address" type="string"/>
+									<field8 name="city" type="string"/>
+									<field9 name="zipCode" type="string"/>
+									<field10 name="mobilePhone" type="string"/>
+								</names>
+							</settings>
+						</text>
+					</data>
+				</component>
+				<component name="value-map" library="core" uid="4" kind="23">
+					<sources>
+						<datapoint pos="0" key="20"/>
+					</sources>
+					<targets>
+						<datapoint/>
+					</targets>
+					<view ltx="540" lty="249" rbx="617" rby="288"/>
+					<data>
+						<valuemap enableDefaultValue="1">
+							<valuemapTable>
+								<entry from="0" to="OK"/>
+							</valuemapTable>
+							<input name="input" type="string"/>
+							<result name="result" type="string" defaultValue="CHECK THIS VALUE"/>
+						</valuemap>
+					</data>
+				</component>
+				<component name="Mappays" library="user" uid="20" kind="19" visible="0" blackbox="0">
+					<view ltx="530" lty="324" rbx="616" rby="341"/>
+					<data>
+						<root scrollposition="1">
+							<header>
+								<namespaces>
+									<namespace/>
+								</namespaces>
+							</header>
+							<entry name="arg" inpkey="33" componentid="18"/>
+						</root>
+						<root scrollposition="1">
+							<header>
+								<namespaces>
+									<namespace/>
+								</namespaces>
+							</header>
+							<entry name="code" outkey="44" componentid="19"/>
+						</root>
+					</data>
+				</component>
+			</children>
+			<graph directed="1">
+				<edges/>
+				<vertices>
+					<vertex vertexkey="14">
+						<edges>
+							<edge vertexkey="2"/>
+							<edge vertexkey="33"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="15">
+						<edges>
+							<edge vertexkey="3"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="16">
+						<edges>
+							<edge vertexkey="4"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="17">
+						<edges>
+							<edge vertexkey="5"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="18">
+						<edges>
+							<edge vertexkey="6"/>
+							<edge vertexkey="20"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="7">
+						<edges>
+							<edge vertexkey="13"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="44">
+						<edges>
+							<edge vertexkey="19"/>
+						</edges>
+					</vertex>
+				</vertices>
+			</graph>
+		</structure>
+	</component>
+	<component name="Mappays" library="user" uid="12" inline="1" editable="1" blackbox="0">
+		<structure>
+			<children>
+				<component name="arg" library="core" uid="18" kind="6">
+					<sources>
+						<datapoint/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="11"/>
+					</targets>
+					<view rbx="74" rby="38"/>
+					<data>
+						<input datatype="string"/>
+						<parameter usageKind="input" name="arg"/>
+					</data>
+				</component>
+				<component name="number" library="core" uid="14" kind="5">
+					<sources>
+						<datapoint pos="0" key="9"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="7"/>
+					</targets>
+					<view ltx="300" rbx="367" rby="38"/>
+				</component>
+				<component name="equal-or-greater" library="core" uid="13" kind="5">
+					<sources>
+						<datapoint pos="0" key="8"/>
+						<datapoint pos="1" key="6"/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="1"/>
+					</targets>
+					<view ltx="396" lty="38" rbx="508" rby="92"/>
+				</component>
+				<component name="if-else" library="core" uid="17" kind="4">
+					<sources>
+						<datapoint pos="0" key="2"/>
+						<datapoint pos="1" key="4"/>
+						<datapoint/>
+					</sources>
+					<targets>
+						<datapoint pos="0" key="10"/>
+					</targets>
+					<view ltx="555" lty="38" rbx="659" rby="111"/>
+				</component>
+				<component name="code" library="core" uid="19" kind="7">
+					<sources>
+						<datapoint pos="0" key="12"/>
+					</sources>
+					<view ltx="752" rbx="805" rby="38"/>
+					<data>
+						<output datatype="anyType"/>
+						<parameter usageKind="output" name="code"/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="15" kind="2">
+					<targets>
+						<datapoint pos="0" key="5"/>
+					</targets>
+					<view ltx="308" lty="107" rbx="354" rby="124"/>
+					<data>
+						<constant value="37" datatype="decimal"/>
+					</data>
+				</component>
+				<component name="constant" library="core" uid="16" kind="2">
+					<targets>
+						<datapoint pos="0" key="3"/>
+					</targets>
+					<view ltx="427" lty="107" rbx="503" rby="124"/>
+					<data>
+						<constant value="CHECK" datatype="string"/>
+					</data>
+				</component>
+			</children>
+			<graph directed="1">
+				<edges/>
+				<vertices>
+					<vertex vertexkey="1">
+						<edges>
+							<edge vertexkey="2"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="3">
+						<edges>
+							<edge vertexkey="4"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="5">
+						<edges>
+							<edge vertexkey="6"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="7">
+						<edges>
+							<edge vertexkey="8"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="11">
+						<edges>
+							<edge vertexkey="9"/>
+						</edges>
+					</vertex>
+					<vertex vertexkey="10">
+						<edges>
+							<edge vertexkey="12"/>
+						</edges>
+					</vertex>
+				</vertices>
+			</graph>
+		</structure>
+	</component>
+</mapping>

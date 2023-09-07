@@ -1,0 +1,18 @@
+[
+	{
+		"person_id": "45",
+		"date": "2022-06-26",
+		"arrival_ts": "0852",
+		"departure_ts": "0645",
+		"extra_info": "0",
+		"code": "CHECK"
+	},
+	{
+		"person_id": "37",
+		"date": "2022-06-25",
+		"arrival_ts": "0656",
+		"departure_ts": "0949",
+		"extra_info": "0",
+		"code": "CHECK"
+	}
+]
