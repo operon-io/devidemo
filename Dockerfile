@@ -4,11 +4,11 @@ ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en'
 
 # We make distinct layers so if there are application changes the library layers can be re-used
 #COPY --chown=185 quarkus-app/lib/ /deployments/lib/
-COPY --chown=185 quarkus-app/*.jar /deployments/
-COPY --chown=185 quarkus-app/app/ /deployments/app/
-COPY --chown=185 quarkus-app/quarkus/ /deployments/quarkus/
-COPY --chown=185 quarkus-app/routes/ /deployments/routes/
-COPY --chown=185 quarkus-app/scripts/ /deployments/scripts/
+#COPY --chown=185 quarkus-app/*.jar /deployments/
+#COPY --chown=185 quarkus-app/app/ /deployments/app/
+#COPY --chown=185 quarkus-app/quarkus/ /deployments/quarkus/
+#COPY --chown=185 quarkus-app/routes/ /deployments/routes/
+#COPY --chown=185 quarkus-app/scripts/ /deployments/scripts/
 
 EXPOSE 8080
 USER 185
