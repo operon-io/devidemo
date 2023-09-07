@@ -2,10 +2,13 @@ FROM registry.access.redhat.com/ubi8/openjdk-17:1.17
 
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en'
 
-COPY target/lib/* /deployments/lib/
-COPY target/*-runner.jar /deployments/quarkus-run.jar
-COPY target/routes/* /deployments/routes/
-COPY target/scripts/* /deployments/scripts/
+# We make distinct layers so if there are application changes the library layers can be re-used
+COPY --chown=185 target/quarkus-app/lib/ /deployments/lib/
+COPY --chown=185 target/quarkus-app/*.jar /deployments/
+COPY --chown=185 target/quarkus-app/app/ /deployments/app/
+COPY --chown=185 target/quarkus-app/quarkus/ /deployments/quarkus/
+COPY --chown=185 target/quarkus-app/routes/ /deployments/routes/
+COPY --chown=185 target/quarkus-app/scripts/ /deployments/scripts/
 
 EXPOSE 8080
 USER 185
